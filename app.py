@@ -3,7 +3,7 @@ import numpy as np
 import joblib
 
 # Set page settings
-st.set_page_config(page_title="💳 Fraud Detection", layout="wide")
+st.set_page_config(page_title="💳 Credit Card Fraud Detection", layout="wide")
 
 # Load model and scaler
 model = joblib.load("random_forest_tuned_model.pkl")
@@ -15,8 +15,7 @@ st.markdown("""
 This smart ML app predicts whether a credit card transaction is **fraudulent or legitimate**
 using 30 anonymized features (`V0–V28`, `Time`, `Amount`).
 
-🧪 Enter your own values below.
-📊 Get a prediction with **fraud probability**.
+Enter your own values below to get predictions.
 """)
 
 # Input fields (30 total in 3 columns)
