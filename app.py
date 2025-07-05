@@ -9,7 +9,11 @@ st.set_page_config(page_title="💳 Fraud Detection", layout="wide")
 # Load model, scaler, and example data
 model = joblib.load("random_forest_tuned_model.pkl")
 scaler = joblib.load("scaler.pkl")
-frauds, legits = joblib.load("examples.pkl")
+
+# Correctly unpack tuple
+frauds_legits = joblib.load("examples.pkl")
+frauds = frauds_legits[0]
+legits = frauds_legits[1]
 
 # Title and description
 st.title("💳 Credit Card Fraud Detection")
@@ -80,7 +84,6 @@ if st.button("🚀 Predict"):
 
     st.info(f"📈 **Probability of Fraud:** {probability:.4f}")
 
-    # Show actual label
     if st.session_state.actual_label is not None:
         label_text = "Fraud" if st.session_state.actual_label == 1 else "Legit"
         st.markdown(f"🧷 **Actual Label from Dataset:** `{label_text}`")
