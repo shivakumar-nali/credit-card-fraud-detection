@@ -1,8 +1,16 @@
+import streamlit as st
+import pandas as pd
+import numpy as np
+import joblib
+
+# Set page settings
+st.set_page_config(page_title="💳 Fraud Detection", layout="wide")
+
 # Load model and scaler
 model = joblib.load("random_forest_tuned_model.pkl")
 scaler = joblib.load("scaler.pkl")
 
-# Load the example arrays
+# Load the example arrays (fraud and legit)
 examples = joblib.load("examples.pkl")
 
 # Title and description
@@ -15,12 +23,12 @@ using 30 anonymized features (`V0–V28`, `Time`, `Amount`).
 📊 Get a prediction with **fraud probability**.
 """)
 
-# Session state to hold input values
+# Initialize session state to hold input values
 if "input_values" not in st.session_state:
     st.session_state.input_values = [0.0] * 30
 
-# Sidebar for example type
-st.sidebar.title("🔍 Select Input Data Type")
+# Sidebar for selecting example type
+st.sidebar.title("🔍 Select Input Type")
 example_type = st.sidebar.radio("Choose input type:", ["Custom Input", "Example Fraud", "Example Legit"])
 
 # Load example if selected
@@ -30,7 +38,11 @@ if example_type == "Example Fraud":
 elif example_type == "Example Legit":
     st.session_state.input_values = examples["legit"].tolist()
 
-# Input fields
+elif example_type == "Custom Input":
+    # Keep defaults (zeros or previously entered)
+    pass
+
+# Input fields (3 columns)
 cols = st.columns(3)
 input_values = []
 
@@ -49,7 +61,7 @@ for i in range(30):
 # Convert to array
 input_array = np.array(input_values).reshape(1, -1)
 
-# Predict
+# Predict button
 if st.button("🚀 Predict"):
     try:
         scaled = scaler.transform(input_array)
